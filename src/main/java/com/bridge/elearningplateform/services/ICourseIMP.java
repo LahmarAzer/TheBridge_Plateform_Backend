@@ -56,8 +56,31 @@ public class ICourseIMP implements ICourseService{
 
     @Override
     public Course updateCourse(Integer id, String title, double price, MultipartFile image) {
-        return null;
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+
+        boolean fileAdded = true;
+        String imagePath = course.getImagePath();
+
+        if (image != null && !image.isEmpty()) {
+            fileAdded = addFile(image);
+            imagePath = pathFile + image.getOriginalFilename();
+        }
+
+        if (!fileAdded) {
+            log.error("Échec de la mise à jour de l'image pour le cours '{}'.", title);
+            throw new RuntimeException("Erreur lors de la mise à jour de l'image.");
+        }
+
+        course.setTitle(title);
+        course.setPrice(price);
+        course.setImagePath(imagePath);
+
+        Course updatedCourse = courseRepository.save(course);
+        log.info("Cours avec l'ID {} mis à jour avec succès.", course.getId());
+        return updatedCourse;
     }
+
 
     public List<Course> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
