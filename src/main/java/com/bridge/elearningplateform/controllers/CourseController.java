@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 @AllArgsConstructor
 @RestController
@@ -21,9 +21,9 @@ public class CourseController {
 
     @PostMapping("/addCourse")
     public ResponseEntity<Course> CreateCourse(
-            @RequestParam String title,
-            @RequestParam double price,
-            @RequestParam MultipartFile imagePath
+            @RequestParam("title") String title,
+            @RequestParam("price") double price,
+            @RequestParam("imagePath") MultipartFile imagePath
     ) {
         try {
             Course course = iCourseService.addCourse(title, price, imagePath);

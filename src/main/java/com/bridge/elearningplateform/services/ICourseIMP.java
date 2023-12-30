@@ -16,8 +16,10 @@ import java.util.List;
 @Service
 @Slf4j
 public class ICourseIMP implements ICourseService{
+
     @Value("${file.upload}")
     private String pathFile;
+
     @Autowired
     private CourseRepository courseRepository;
 
@@ -53,7 +55,6 @@ public class ICourseIMP implements ICourseService{
         return savedCourse;
     }
 
-
     @Override
     public Course updateCourse(Integer id, String title, double price, MultipartFile image) {
         Course course = courseRepository.findById(id)
@@ -81,13 +82,11 @@ public class ICourseIMP implements ICourseService{
         return updatedCourse;
     }
 
-
     public List<Course> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         log.info("Récupération de tous les cours avec succès. Nombre de cours trouvés: {}", courses.size());
         return courses;
     }
-
 
     public Course getCourseById(Integer id) {
         Course course = courseRepository.findById(id)
