@@ -10,15 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+// Allows cross-origin requests from the specified domain, usually needed for local development.
 @CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 @AllArgsConstructor
+// Marks the class as a REST controller, with all handler methods mapped to the '/course' path.
 @RestController
 @RequestMapping("/course")
 public class CourseController {
 
+    // Autowires the ICourseService to handle the business logic.
     ICourseService iCourseService ;
 
+    // Handles POST requests for creating a new course. It accepts form data including title, price, and an image file.
     @PostMapping("/addCourse")
     public ResponseEntity<Course> CreateCourse(
             @RequestParam("title") String title,
@@ -33,6 +37,7 @@ public class CourseController {
         }
     }
 
+    // Handles PUT requests for updating an existing course by its ID. All parameters are optional.
     @PutMapping("/updatecourse/{id}")
     public ResponseEntity<Course> updateCourse(
             @PathVariable Integer id,
@@ -51,16 +56,18 @@ public class CourseController {
         }
     }
 
+    // Handles DELETE requests to remove a course by its ID.
     @DeleteMapping("/deleteCourse/{id}")
     public void deleteCourse(@PathVariable Integer id) {
         iCourseService.deleteCourse(id);
     }
 
+    // Handles GET requests to retrieve a specific course by its ID.
     @GetMapping("/getCourse/{id}")
     public Course getCourseById(@PathVariable Integer id) {
         return iCourseService.getCourseById(id);
     }
-
+    // Handles GET requests to retrieve all courses available.
     @GetMapping("/getAllCourses")
     public List<Course> getAllCourses(){
         return iCourseService.getAllCourses();
